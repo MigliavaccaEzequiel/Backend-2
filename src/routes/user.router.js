@@ -1,5 +1,6 @@
 import { Router } from "express";
 import userModel from "../models/user.model.js";
+import { createHash } from "../utils/index.js";
 
 const router = Router();
 
@@ -34,11 +35,11 @@ router.get('/:id', async ( req, res ) => {
 //post
 router.post("/", async ( req, res ) => {
     try {
-        const { name, last_name, email } = req.body;
-        if (!name || !last_name || !email) {
+        const { first_name, last_name, email, age, password } = req.body;
+        if (!first_name || !last_name || !email || !age || !password) {
             return res.status(400).json({ message: "Faltan datos obligatorios" });
         }
-        const newUser = await userModel.create({ name, last_name, email });
+        const newUser = await userModel.create({ first_name, last_name, email, age, password: createHash(password) });
         res.status(201).json({ message: "Usuario creado", payload: newUser});
     } catch (error) {
         console.error('No se pudo crear el usuario', error.message);
@@ -50,10 +51,10 @@ router.post("/", async ( req, res ) => {
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, last_name, email } = req.body;
+        const { first_name, last_name, email, age } = req.body;
         const updatedUser = await userModel.findByIdAndUpdate(
             id, 
-            { name, last_name, email }, 
+            { first_name, last_name, email, age }, 
             { new: true }
         );
         if (!updatedUser) {
