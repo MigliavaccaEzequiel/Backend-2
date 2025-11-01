@@ -20,8 +20,7 @@ const app = express();
 
 
 //settings
-//app.set('PORT', 3000)
-//const secret= "H4kun4M4t4t4";
+//app.set('PORT', config.PORT);
 //const FileStore = createFileStore(session);
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -105,7 +104,6 @@ app.use((req, res, next) => {
 });
 
 //listeners
-//connectDB();
 conectarDB(config.MONGO_URL, config.DB_NAME);
 app.listen(config.PORT, () => {
     console.log(`Server on port ${config.PORT}`)

@@ -2,8 +2,9 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
+import config from "../config/config.js";
 
-const JWT_SECRET = "arribalabirra";
+const JWT_SECRET = config.JWT_SECRET;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(dirname(__filename), "..");
 

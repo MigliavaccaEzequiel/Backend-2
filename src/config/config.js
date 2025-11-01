@@ -1,7 +1,6 @@
-const config = {
-    PORT: 3000,
-    MONGO_URL: "mongodb+srv://MigliavaccaEzequiel:Emin3mToy@cluster0.p8r2cxn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-    DB_NAME: "Backend2"
-}
-
-export default config;
+export default {
+    PORT: process.env.PORT || 3000,
+    MONGO_URL: process.env.MONGO_URL,
+    DB_NAME: process.env.DB_NAME,
+    JWT_SECRET: process.env.JWT_SECRET
+};

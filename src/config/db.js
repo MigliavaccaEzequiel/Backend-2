@@ -9,7 +9,7 @@ const conectarDB = async (url, dbName)=>{
             }
         )
 
-        console.log (`DB online`)
+        console.log (`DB online: ${dbName}`)
     } catch (error) {
         console.log(`Error al conectar a DB: ${error.message}`)
         process.exit()

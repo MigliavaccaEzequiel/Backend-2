@@ -3,10 +3,11 @@ import local from "passport-local";
 import userModel from "../models/user.model.js";
 import { createHash, isValidPassword } from "../utils/index.js";
 import jwt, { ExtractJwt } from 'passport-jwt';
+import config from "./config.js";
 
 const JWTStrategy = jwt.Strategy,
 ExtractJWT = jwt.ExtractJwt;
-const JWT_SECRET = "arribalabirra";
+const JWT_SECRET = config.JWT_SECRET;
 
 const cookieExtractor = (req) => {
   let token = null;
