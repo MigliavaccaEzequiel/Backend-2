@@ -14,7 +14,7 @@ export const createHash = (password) =>
 export const isValidPassword = (password, hash) =>
   bcrypt.compareSync(password, hash);
 
-export const generateToken = (user) => jwt.sign({ user }, JWT_SECRET, { expiresIn:"1h" });
+export const generateToken = (user) => jwt.sign(user, JWT_SECRET, { expiresIn:"1h" });
 
 export const verifyToken = (token) => {
   try {

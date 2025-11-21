@@ -1,6 +1,6 @@
 import passport from "passport";
 import local from "passport-local";
-import userModel from "../models/user.model.js";
+import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/index.js";
 import jwt, { ExtractJwt } from 'passport-jwt';
 import config from "./config.js";

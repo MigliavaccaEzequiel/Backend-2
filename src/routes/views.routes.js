@@ -1,6 +1,7 @@
 import { Router } from "express";
 //import { verifyToken } from "../utils/index.js";
 import passport from "passport";
+import UserDTO from "../dto/user.dto.js";
 
 const router = Router();
 
@@ -12,21 +13,8 @@ router.get("/login", (req, res) => {
   res.render("login", { title: "Login" });
 });
 
-// router.get("/profile", (req, res) => {
-//   //const user =  req.session.user ;
-//   //console.log(user);
-//   const token = req.cookies.authCookie;
-//   console.log(`Token desde la cookie: ${token}`);
-  
-//   const { user } = verifyToken(token);
-//   console.log(user);
-  
-
-//   res.render("profile", { title: "PROFILE", user: user });
-// });
-
 router.get("/profile", passport.authenticate("jwt", { session: false }), (req, res) => {
-  res.render("profile", { title: "Perfil", user: req.user.user });
+  res.render("profile", { title: "Perfil", user: req.user });
 })
 
 router.get("/recupero", (req, res) => {
@@ -34,11 +22,16 @@ router.get("/recupero", (req, res) => {
 });
 
 router.get("/edit", passport.authenticate("jwt", { session: false }), (req, res) => {
-  res.render("edit", { title: "Editar perfil", user: req.user.user });
+  res.render("edit", { title: "Editar perfil", user: req.user });
 });
 
-router.get("/current", passport.authenticate("jwt", { session: false }), (req, res) => {
-  res.json({ user: req.user.user });
-});
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const userDTO = new UserDTO(req.user);
+    res.json({ status: "success", payload: userDTO });
+  }
+);
 
 export default router;
