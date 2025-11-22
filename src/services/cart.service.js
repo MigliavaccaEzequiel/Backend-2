@@ -43,9 +43,6 @@ class CartService {
     return updated;
   };
 
-  // ========================================================
-  // COMPRA PARCIAL PROFESIONAL
-  // ========================================================
   purchase = async (user) => {
     const cart = await this.getCartById(user.cart);
 
@@ -65,7 +62,6 @@ class CartService {
       if (!product) continue;
 
       if (product.stock === 0) {
-        // producto sin stock → mantener pero con cantidad 0
         item.quantity = 0;
         productosSinStock.push({
           product: product._id,
@@ -75,7 +71,6 @@ class CartService {
         continue;
       }
 
-      // Ajustamos la cantidad al stock AVAILABLE
       const quantityToBuy = Math.min(item.quantity, product.stock);
 
       if (quantityToBuy < item.quantity) {
@@ -86,11 +81,9 @@ class CartService {
         });
       }
 
-      // Descontar stock real
       product.stock -= quantityToBuy;
       await product.save();
 
-      // Contabilizar compra
       totalAmount += product.price * quantityToBuy;
 
       productosComprados.push({
@@ -98,14 +91,11 @@ class CartService {
         quantity: quantityToBuy,
       });
 
-      // Ajustamos carrito a la cantidad REAL
       item.quantity = product.stock === 0 ? 0 : product.stock;
     }
 
-    // Guardamos carrito con cantidades actualizadas
     await cart.save();
 
-    // Generar ticket
     const ticket = await ticketService.createTicket(
       { products: productosComprados, total: totalAmount },
       user.email

@@ -1,11 +1,7 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
 import { join, __dirname } from './utils/index.js';
-//import mongoose from 'mongoose';
-//import session from 'express-session';
 import cookieParser from 'cookie-parser';
-//import createFileStore from 'session-file-store';
-//import MongoStore from 'connect-mongo';
 import passport from "passport";
 import methodOverride from 'method-override';
 import usersRoutes from './routes/user.router.js';

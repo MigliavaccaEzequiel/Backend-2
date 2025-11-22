@@ -1,5 +1,4 @@
 import { Router } from "express";
-//import { verifyToken } from "../utils/index.js";
 import passport from "passport";
 import UserDTO from "../dto/user.dto.js";
 
