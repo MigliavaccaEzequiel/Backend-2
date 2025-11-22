@@ -11,11 +11,9 @@ class ProductService {
 
   createProduct = async (data) => await productRepository.createProduct(data);
 
-  updateProduct = async (id, data) =>
-    await productRepository.updateProduct(id, data);
+  updateProduct = async (id, data) => await productRepository.updateProduct(id, data);
 
-  deleteProduct = async (id) =>
-    await productRepository.deleteProduct(id);
+  deleteProduct = async (id) => await productRepository.deleteProduct(id);
 }
 
 export default new ProductService();

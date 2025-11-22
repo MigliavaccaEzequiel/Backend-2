@@ -21,17 +21,11 @@ class CartDAO {
     const product = await ProductModel.findById(pid);
     if (!product) throw new Error("Producto no encontrado");
 
-    const existing = cart.products.find(p => p.product.toString() === pid);
+    const existing = cart.products.find((p) => p.product.toString() === pid);
 
     if (existing) {
-      if (existing.quantity + quantity > product.stock) {
-        throw new Error(`No hay suficiente stock. Disponible: ${product.stock}`);
-      }
       existing.quantity += quantity;
     } else {
-      if (quantity > product.stock) {
-        throw new Error(`No hay suficiente stock. Disponible: ${product.stock}`);
-      }
       cart.products.push({ product: pid, quantity });
     }
 
@@ -42,7 +36,7 @@ class CartDAO {
     const cart = await CartModel.findById(cid);
     if (!cart) return null;
 
-    const product = cart.products.find(p => p.product.toString() === pid);
+    const product = cart.products.find((p) => p.product.toString() === pid);
     if (!product) return null;
 
     product.quantity = quantity;
@@ -54,7 +48,9 @@ class CartDAO {
     const cart = await CartModel.findById(cid);
     if (!cart) return null;
 
-    cart.products = cart.products.filter(p => p.product.toString() !== pid);
+    cart.products = cart.products.filter(
+      (p) => p.product.toString() !== pid
+    );
 
     return await cart.save();
   };
@@ -64,7 +60,6 @@ class CartDAO {
     if (!cart) return null;
 
     cart.products = [];
-
     return await cart.save();
   };
 }

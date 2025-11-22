@@ -1,5 +1,4 @@
 import cartService from "../services/cart.service.js";
-import ticketService from "../services/ticket.service.js";
 
 class CartsController {
   getCarts = async (req, res) => {
@@ -42,7 +41,13 @@ class CartsController {
     try {
       const cid = req.user.cart;
       const quantity = req.body.quantity || 1;
-      const updated = await cartService.addProduct(cid, req.params.pid, quantity);
+
+      const updated = await cartService.addProduct(
+        cid,
+        req.params.pid,
+        quantity
+      );
+
       res.json({ status: "success", payload: updated });
     } catch (error) {
       res.status(400).json({ status: "error", message: error.message });
@@ -65,7 +70,10 @@ class CartsController {
 
   removeProduct = async (req, res) => {
     try {
-      const updated = await cartService.removeProduct(req.user.cart, req.params.pid);
+      const updated = await cartService.removeProduct(
+        req.user.cart,
+        req.params.pid
+      );
       res.json({ status: "success", payload: updated });
     } catch (error) {
       res.status(400).json({ status: "error", message: error.message });
@@ -83,33 +91,18 @@ class CartsController {
 
   purchase = async (req, res) => {
     try {
-      const user = req.user;
-      const cart = await cartService.getCartById(user.cart);
+      const result = await cartService.purchase(req.user);
 
-      if (!cart || cart.products.length === 0) {
-        return res.status(400).json({ status: "error", message: "Carrito vacío" });
-      }
-
-      for (let p of cart.products) {
-        if (p.quantity > p.product.stock) {
-          return res.status(400).json({ 
-            status: "error", 
-            message: `No hay suficiente stock para el producto ${p.product.title}` 
-          });
-        }
-      }
-
-      const ticket = await ticketService.createTicket(cart, user.email);
-
-      await cartService.emptyCart(user.cart);
-
-      return res.json({ status: "success", payload: ticket });
-
+      res.json({
+        status: "success",
+        message: "Compra realizada parcialmente",
+        ticket: result.ticket,
+        productos_sin_stock: result.productosSinStock,
+      });
     } catch (error) {
       res.status(500).json({ status: "error", message: error.message });
     }
   };
-
 }
 
 export default new CartsController();
